@@ -1,0 +1,21 @@
+@import "tailwindcss";
+table {
+  border-radius: 20px;
+  width: 100%;
+
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+th,
+td {
+  border: 1px solid #891fb9;
+  padding: 8px;
+  text-align: center;
+}
+th {
+  color: aliceblue;
+  background-color: #5b0e93;
+}
+::-webkit-scrollbar-thumb{
+  background: #5b0e93;
+}
