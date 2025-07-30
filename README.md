@@ -165,6 +165,8 @@ Run:
 <pre> cd app npm run dev </pre>
 
 ✅ Summary
+
+
 Frontend: React (Vite) + Tailwind + Ant Design
 
 Backend: Node.js + Express + Prisma + MySQL+ cloudnary
