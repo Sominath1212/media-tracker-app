@@ -3,7 +3,7 @@
 A full-stack application to manage and track movies and TV shows.
 This project is built using <b>React (Vite) + TailwindCSS</b> for the frontend and<b> Express + Prisma + MySQL</b> for the backend.
 
-<hr>
+
 <h2>📂 Folder Structure</h2>
 plaintext
 Copy
@@ -68,9 +68,51 @@ Add Tailwind to src/index.css:
 css
 Copy
 Edit
-@tailwind base;
-@tailwind components;
 @tailwind utilities;
+
+# ☁️ Using Cloudinary in React  
+
+## 1️⃣ Sign Up / Log In  
+- Go to [Cloudinary](https://cloudinary.com/).  
+- Create a free account or log in to your existing account.  
+
+---
+
+## 2️⃣ Get API Credentials  
+- Navigate to **Dashboard** in your Cloudinary account.  
+- Copy the following details:  
+  - **Cloud Name**  
+  - **API Key**  
+  - **API Secret** *(for backend usage only)*  
+
+---
+
+## 3️⃣ Install Cloudinary React Package  
+
+```bash
+npm install cloudinary-react
+```
+
+<pre>
+import axios from "axios";
+
+const handleUpload = async (file) => {
+  const data = new FormData();
+  data.append("file", file);
+  data.append("upload_preset", "YOUR_UPLOAD_PRESET");
+
+  try {
+    const res = await axios.post(
+      `https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload`,
+      data
+    );
+    console.log("Image URL:", res.data.secure_url);
+  } catch (err) {
+    console.error(err);
+  }
+};
+</pre>
+
 <hr>
 <h3>🛠️ Backend (Node.js + Prisma)</h3>
 5️⃣ Initialize Node.js
@@ -112,6 +154,6 @@ Run:
 ✅ Summary
 Frontend: React (Vite) + Tailwind + Ant Design
 
-Backend: Node.js + Express + Prisma + MySQL
+Backend: Node.js + Express + Prisma + MySQL+ cloudnary
 
 Features: Movie & TV show tracking, editing, and updating
