@@ -79,10 +79,10 @@ Edit
 <pre> npm install @prisma/client cors dotenv express mysql2 nodemon npm install prisma --save-dev </pre>
 7️⃣ Setup Prisma
 <pre> npx prisma init </pre>
+
 Update .env with MySQL database URL:
 (make sure your create a databse in Mysql workBanch / xxamp server)
-Edit
-Copy
+
 Edit
 DATABASE_URL="mysql://user:password@localhost:3306/mediadb"
 Create your Prisma schema in prisma/schema.prisma:
