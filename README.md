@@ -69,7 +69,20 @@ css
 Copy
 Edit
 @tailwind utilities;
+<hr>
+🖌️ Ant Design Integration in React
+This guide explains how to install and integrate Ant Design (Ant UI) in a React application to build beautiful and responsive user interfaces.
 
+🚀 1. Installation
+Run the following command to install Ant Design:
+<hr>
+
+```bash
+Copy
+Edit
+npm install antd
+
+```
 # ☁️ Using Cloudinary in React  
 
 ## 1️⃣ Sign Up / Log In  
