@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -17,12 +17,12 @@ datasource db {
 model Media {
   id        Int      @id @default(autoincrement())
   title     String
+  type      String
   image     String
-  type  String
   director  String
   budget    Float
   location  String
-  duration  Int      // duration in minutes (can use Float if fractional)
+  duration  Int
   year      Int
   createdAt DateTime @default(now())
 }

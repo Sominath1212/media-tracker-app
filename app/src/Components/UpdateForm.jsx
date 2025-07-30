@@ -4,16 +4,24 @@ import { PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-function AddMedias() {
-  const [title, setTitle] = useState("");
-  const [director, setDirector] = useState("");
-  const [budget, setBudget] = useState("");
-  const [location, setLocation] = useState("");
-  const [duration, setDuration] = useState("");
-  const [year, setYear] = useState("");
-  const [type, setType] = useState("");
-  const [file, setFile] = useState(null);
+function UpdateForm({ selectedItem }) {
   const [preview, setPreview] = useState(null);
+
+  const [formData, setFormData] = useState({
+    title: "",
+    director: "",
+    budget: "",
+    location: "",
+    duration: "",
+    year: "",
+    type: "",
+    file: "",
+  });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+  //upload images
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
 
@@ -31,7 +39,7 @@ function AddMedias() {
     });
 
     const uploadurlimage = await res.json();
-    setFile(uploadurlimage.url);
+    setFormData({ ...formData, file: uploadurlimage.url });
 
     setPreview(uploadurlimage.url);
     toast.success("Poster uploaded");
@@ -41,53 +49,71 @@ function AddMedias() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(file, title, director, budget, location, duration, year, type);
+
+    // console.log(formData);
+
+    const data = {};
+    for (let key in formData) {
+      if (formData[key] !== "") {
+        data[key] = formData[key];
+      }
+    }
+
+    // console.log(file, title, director, budget, location, duration, year, type);
 
     try {
+      // Filter out empty or undefined fields before sending
+      const filteredData = Object.fromEntries(
+        Object.entries(data).map(([key, value]) => [
+          key,
+          ["budget", "duration", "year"].includes(key) ? Number(value) : value,
+        ])
+      );
+
       axios
-        .post("http://localhost:5000/media/add-media", {
-          file,
-          title,
-          director,
-          budget,
-          location,
-          duration,
-          year,
-          type,
+        .patch(
+          `http://localhost:5000/media/update-media/${selectedItem.id}`,
+          filteredData
+        )
+        .then((response) => {
+          console.log(response);
+
+          toast.success("Media Updated");
+          setFormData({
+            title: "",
+            director: "",
+            budget: "",
+            location: "",
+            duration: "",
+            year: "",
+            type: "",
+            file: "",
+          });
         })
-        .then((responce) => {
-          if (responce) {
-            toast.success("Media Added");
-            setBudget("");
-            setDirector("");
-            setDuration("");
-            setFile("");
-            setLocation("");
-            setPreview("");
-            setTitle("");
-            setType("");
-            setYear("");
-          }
+        .catch((error) => {
+          console.error(error);
+          toast.error("Something went wrong");
+          setFormData({
+            title: "",
+            director: "",
+            budget: "",
+            location: "",
+            duration: "",
+            year: "",
+            type: "",
+            file: "",
+          });
         });
     } catch (error) {
-      console.log(error);
-      toast.error("something went wrong");
-      setBudget("");
-      setDirector("");
-      setDuration("");
-      setFile("");
-      setLocation("");
-      setPreview("");
-      setTitle("");
-      setType("");
-      setYear("");
+      console.error(error);
+      toast.error("Something went wrong");
     }
   };
   return (
     <div className="text-center max-h-[79vh]">
-      <h2 className="text-center font-bold text-4xl mb-4">Add Media</h2>
+      <h2  className="text-center font-bold text-4xl mb-4">Update Media</h2>
       <form
-        className="text-start flex flex-col gap-5 shadow-2xl p-5 h-[85vh] overflow-y-auto"
+        className="text-start flex flex-col gap-5 shadow-2xl p-5"
         onSubmit={handleSubmit}
       >
         <div className="flex flex-col items-center mb-4">
@@ -117,10 +143,8 @@ function AddMedias() {
             type="text"
             name="title"
             placeholder="Put the title"
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
+            value={formData.title}
+            onChange={handleChange}
             className="px-4 py-2 outline-none border border-purple-500 w-fullm-2 rounded"
           />
         </div>
@@ -129,10 +153,8 @@ function AddMedias() {
             Director
           </label>
           <input
-            value={director}
-            onChange={(e) => {
-              setDirector(e.target.value);
-            }}
+            value={formData.director}
+            onChange={handleChange}
             type="text"
             name="director"
             placeholder="Director Name"
@@ -146,10 +168,8 @@ function AddMedias() {
           <select
             name="type"
             id="type"
-            value={type}
-            onChange={(e) => {
-              setType(e.target.value);
-            }}
+            value={formData.type}
+            onChange={handleChange}
             className="px-4 py-2 outline-none border border-purple-500 w-fullm-2 rounded"
           >
             <option value="">Select Type</option>
@@ -162,10 +182,8 @@ function AddMedias() {
             Budget
           </label>
           <input
-            value={budget}
-            onChange={(e) => {
-              setBudget(e.target.value);
-            }}
+            value={formData.budget}
+            onChange={handleChange}
             type="text"
             name="budget"
             placeholder="Budget "
@@ -177,10 +195,8 @@ function AddMedias() {
             Location
           </label>
           <input
-            value={location}
-            onChange={(e) => {
-              setLocation(e.target.value);
-            }}
+            value={formData.location}
+            onChange={handleChange}
             type="text"
             name="location"
             placeholder="Location "
@@ -192,10 +208,8 @@ function AddMedias() {
             Duration
           </label>
           <input
-            value={duration}
-            onChange={(e) => {
-              setDuration(e.target.value);
-            }}
+            value={formData.duration}
+            onChange={handleChange}
             type="text"
             name="duration"
             placeholder="Duration "
@@ -207,10 +221,8 @@ function AddMedias() {
             Year
           </label>
           <input
-            value={year}
-            onChange={(e) => {
-              setYear(e.target.value);
-            }}
+            value={formData.year}
+            onChange={handleChange}
             type="date"
             name="year"
             placeholder="year "
@@ -218,11 +230,11 @@ function AddMedias() {
           />
         </div>
         <button className="bg-purple-500 py-3 px-2 rounded hover:bg-purple-600 cursor-pointer">
-          Submit
+          Update
         </button>
       </form>
     </div>
   );
 }
 
-export default AddMedias;
+export default UpdateForm;
